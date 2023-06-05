@@ -70,15 +70,9 @@ class List {
     }
   
     // Operation: Extend the list with elements from another list
-    extend(elements) {
-        if (!Array.isArray(elements)) {
-          throw new TypeError('The elements parameter must be an array.');
-        }
-      
-        for (const element of elements) {
-          this.append(element);
-        }
-      }
+    // extend(elements) {
+    //     this.elements.push(...elements);
+    //   }
   }
   
   module.exports = List;

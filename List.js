@@ -70,7 +70,7 @@ class Node {
       } else {
         let current = this.head;
         let prev = null;
-        let i = 1;
+        let i = 0;
         while (i < index) {
           prev = current;
           current = current.next;

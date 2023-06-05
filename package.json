@@ -1,10 +1,11 @@
 {
-  "name": "SDM_Lab2_tests",
+  "name": "sdm_lab2_tests",
   "version": "1.0.0",
   "description": "Unit tests and CI",
   "main": "main.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "jest": "jest"
   },
   "author": "",
   "license": "ISC",

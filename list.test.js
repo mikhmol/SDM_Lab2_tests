@@ -1,100 +1,138 @@
-"use strict"
-
 const List = require('./List');
 
-// Length method test
-test('Length method should return the number of elements in the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  list.append('C');
-  expect(list.length()).toBe(3);
-});
+describe('List', () => {
+  let myList;
 
-// Append method test
-test('Append method should add an element to the end of the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  expect(list.length()).toBe(2);
-  expect(list.get(1)).toBe('B');
-});
+  beforeEach(() => {
+    myList = new List();
+  });
 
-// Insert method test
-test('Insert method should insert an element at the specified position in the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('C');
-  list.insert('B', 1);
-  expect(list.length()).toBe(3);
-  expect(list.get(1)).toBe('B');
-});
+  test('length should return 0 for an empty list', () => {
+    expect(myList.length()).toBe(0);
+  });
 
-// Delete method test
-test('Delete method should remove and return the element at the specified position in the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  list.append('C');
-  const deletedElement = list.delete(1);
-  expect(list.length()).toBe(2);
-  expect(deletedElement).toBe('B');
-});
+  test('append should add an element to the end of the list', () => {
+    myList.append('A');
+    myList.append('B');
+    expect(myList.length()).toBe(2);
+    expect(myList.get(0)).toBe('A');
+    expect(myList.get(1)).toBe('B');
+  });
 
-// DeleteAll method test
-test('DeleteAll method should remove all elements from the list that match the given value', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  list.append('A');
-  list.append('C');
-  list.deleteAll('A');
-  expect(list.length()).toBe(2);
-  expect(list.get(0)).toBe('B');
-  expect(list.get(1)).toBe('C');
-});
+  test('insert should insert an element at the specified index', () => {
+    myList.append('A');
+    myList.append('C');
+    myList.insert('B', 1);
+    expect(myList.length()).toBe(3);
+    expect(myList.get(0)).toBe('A');
+    expect(myList.get(1)).toBe('B');
+    expect(myList.get(2)).toBe('C');
+  });
 
-// Get method test
-test('Get method should return the element at the specified position in the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  list.append('C');
-  expect(list.get(1)).toBe('B');
-});
+  test('insert should throw an error for an invalid index', () => {
+    expect(() => myList.insert('A', -1)).toThrowError('Invalid index');
+    expect(() => myList.insert('A', 1)).toThrowError('Invalid index');
+    expect(() => myList.insert('A', 2)).toThrowError('Invalid index');
+  });
 
-// Clone method test
-test('Clone method should return a copy of the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  const clone = list.clone();
-  expect(clone.length()).toBe(list.length());
-  expect(clone.get(0)).toBe(list.get(0));
-  expect(clone.get(1)).toBe(list.get(1));
-});
+  test('delete should remove the element at the specified index', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.append('C');
+    const deletedElement = myList.delete(1);
+    expect(myList.length()).toBe(2);
+    expect(deletedElement).toBe('B');
+    expect(myList.get(0)).toBe('A');
+    expect(myList.get(1)).toBe('C');
+  });
 
-// Reverse method test
-test('Reverse method should reverse the order of elements in the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  list.append('C');
-  list.reverse();
-  expect(list.get(0)).toBe('C');
-  expect(list.get(1)).toBe('B');
-  expect(list.get(2)).toBe('A');
-});
+  test('delete should throw an error for an invalid index', () => {
+    expect(() => myList.delete(-1)).toThrowError('Invalid index');
+    expect(() => myList.delete(0)).toThrowError('Invalid index');
+    expect(() => myList.delete(1)).toThrowError('Invalid index');
+  });
 
-// FindFirst method test
-test('FindFirst method should return the position of the first occurrence of the specified element in the list', () => {
-  const list = new List();
-  list.append('A');
-  list.append('B');
-  list.append('C');
-  list.append('A');
-  expect(list.findFirst('A')).toBe(0);
-  expect(list.findFirst('B')).toBe(1);
-  expect(list.findFirst('C')).toBe(2);
-  expect(list.findFirst('D')).toBe(-1);
+  test('deleteAll should remove all elements with the specified value', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.append('A');
+    myList.deleteAll('A');
+    expect(myList.length()).toBe(1);
+    expect(myList.get(0)).toBe('B');
+  });
+
+  test('get should return the element at the specified index', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.append('C');
+    expect(myList.get(0)).toBe('A');
+    expect(myList.get(1)).toBe('B');
+    expect(myList.get(2)).toBe('C');
+  });
+
+  test('get should throw an error for an invalid index', () => {
+    expect(() => myList.get(-1)).toThrowError('Invalid index');
+    expect(() => myList.get(0)).toThrowError('Invalid index');
+    expect(() => myList.get(1)).toThrowError('Invalid index');
+  });
+
+  test('clone should create a copy of the list', () => {
+    myList.append('A');
+    myList.append('B');
+    const newList = myList.clone();
+    expect(newList.length()).toBe(2);
+    expect(newList.get(0)).toBe('A');
+    expect(newList.get(1)).toBe('B');
+    newList.delete(0);
+    expect(myList.length()).toBe(2);
+    expect(newList.length()).toBe(1);
+  });
+
+  test('reverse should reverse the order of elements in the list', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.append('C');
+    myList.reverse();
+    expect(myList.length()).toBe(3);
+    expect(myList.get(0)).toBe('C');
+    expect(myList.get(1)).toBe('B');
+    expect(myList.get(2)).toBe('A');
+  });
+
+  test('findFirst should return the index of the first occurrence of an element', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.append('C');
+    myList.append('B');
+    expect(myList.findFirst('B')).toBe(1);
+    expect(myList.findFirst('D')).toBe(-1);
+  });
+
+  test('findLast should return the index of the last occurrence of an element', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.append('C');
+    myList.append('B');
+    expect(myList.findLast('B')).toBe(3);
+    expect(myList.findLast('D')).toBe(-1);
+  });
+
+  test('clear should remove all elements from the list', () => {
+    myList.append('A');
+    myList.append('B');
+    myList.clear();
+    expect(myList.length()).toBe(0);
+  });
+
+  test('extend should add all elements from another list to the current list', () => {
+    const otherList = new List();
+    otherList.append('D');
+    otherList.append('E');
+    myList.append('A');
+    myList.extend(otherList);
+    expect(myList.length()).toBe(3);
+    expect(myList.get(0)).toBe('A');
+    expect(myList.get(1)).toBe('D');
+    expect(myList.get(2)).toBe('E');
+  });
 });

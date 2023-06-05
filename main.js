@@ -40,7 +40,7 @@ list.clear();
 const otherList = new List();
 otherList.append('E');
 otherList.append('F');
-//list.extend(otherList);
+list.extend(otherList);
 
 // Display the results
 console.log('List:', list);
